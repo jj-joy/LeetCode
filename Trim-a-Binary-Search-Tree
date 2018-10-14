@@ -1,0 +1,72 @@
+Trim-a-Binary-Search-Tree
+
+Given a binary search tree and the lowest and highest boundaries as L and R, trim the tree so that all its elements lies in [L, R] (R >= L). You might need to change the root of the tree, so the result should return the new root of the trimmed binary search tree.
+
+Example 1:
+Input: 
+    1
+   / \
+  0   2
+
+  L = 1
+  R = 2
+
+Output: 
+    1
+      \
+       2
+Example 2:
+Input: 
+    3
+   / \
+  0   4
+   \
+    2
+   /
+  1
+
+  L = 1
+  R = 3
+
+Output: 
+      3
+     / 
+   2   
+  /
+ 1
+
+这道题让我们修剪一棵二叉搜索树，给了个边界范围[L, R], 所有不在这个范围内的结点应该被移除掉，
+但是仍需要保留二叉搜索树的性质，即左<根<右，有时候是小于等于。
+
+博主最开始的想法是先遍历一遍二叉树，将在返回内的结点值都放到一个数组后，遍历结束后再根据数组重建一棵二叉搜索树。
+这种方法会在某些test case上fail掉，可能会改变原来的二叉搜索树的结构，所以我们只能换一种思路。
+
+正确方法其实应该是在遍历的过程中就修改二叉树，移除不合题意的结点。当然对于二叉树的题，十有八九都是要用递归来解的。
+首先判断如果root为空，那么直接返回空即可。
+然后就是要看根结点是否在范围内，如果根结点值小于L，那么返回对其右子结点调用递归函数的值；
+如果根结点大于R，那么返回对其左子结点调用递归函数的值。
+如果根结点在范围内，将其左子结点更新为对其左子结点调用递归函数的返回值，同样，将其右子结点更新为对其右子结点调用递归函数的返回值，最后返回root即可。
+
+ /**
+ * Definition for a binary tree node.
+ * type TreeNode struct {
+ *     Val int
+ *     Left *TreeNode
+ *     Right *TreeNode
+ * }
+ */
+
+func trimBST(root *TreeNode, L int, R int) *TreeNode {
+    if root == nil {
+        return root
+    }
+    if root.Val < L {
+        return trimBST(root.Right, L, R)
+    } else if root.Val > R {
+        return trimBST(root.Left, L, R)
+    } else {
+        root.Left = trimBST(root.Left, L, R)
+        root.Right = trimBST(root.Right, L, R)
+        return root
+    }
+}
