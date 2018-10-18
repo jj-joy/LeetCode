@@ -1,0 +1,55 @@
+Two-Sum-IV-Input-is-a-BST
+
+Given a Binary Search Tree and a target number, return true if there exist two elements in the BST such that their sum is equal to the given target.
+
+Example 1:
+Input: 
+    5
+   / \
+  3   6
+ / \   \
+2   4   7
+Target = 9
+Output: True
+
+Example 2:
+Input: 
+    5
+   / \
+  3   6
+ / \   \
+2   4   7
+Target = 28
+Output: False
+
+
+无论数组还是切片，都有长度限制。
+也就是追加切片的时候，如果元素正好在切片的容量范围内，直接在尾部追加一个元素即可。
+如果超出了最大容量，再追加元素就需要针对底层的数组进行复制和扩容操作了。
+slice或者array作为函数参数传递的时候，本质是传值而不是传引用。
+
+/**
+ * Definition for a binary tree node.
+ * type TreeNode struct {
+ *     Val int
+ *     Left *TreeNode
+ *     Right *TreeNode
+ * }
+ */
+func findTarget(root *TreeNode, k int) bool {
+	var keys []int
+	return findNodes(root, k, &keys)
+}
+
+func findNodes(node *TreeNode, k int, keys *[]int) bool {
+	if node == nil {
+		return false
+	}
+	for _, key := range *keys {
+		if k - node.Val == key {
+			return true
+		}
+	}
+	*keys = append(*keys, node.Val)
+	return findNodes(node.Left, k, keys) || findNodes(node.Right, k, keys)
+}
