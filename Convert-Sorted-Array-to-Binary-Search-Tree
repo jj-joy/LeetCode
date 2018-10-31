@@ -1,0 +1,44 @@
+Convert-Sorted-Array-to-Binary-Search-Tree
+
+Given an array where elements are sorted in ascending order, convert it to a height balanced BST.
+
+For this problem, a height-balanced binary tree is defined as a binary tree in which the depth of the two subtrees of every node never differ by more than 1.
+
+Example:
+
+Given the sorted array: [-10,-3,0,5,9],
+
+One possible answer is: [0,-3,9,-10,null,5], which represents the following height balanced BST:
+
+      0
+     / \
+   -3   9
+   /   /
+ -10  5
+
+思路
+首先要搞清楚一个问题：有序数组和二叉搜索树有什么关系呢？答案是二叉搜索树的中序遍历结果是有序数组。
+那么这个关系有什么用呢？注意题目要求转换得到的二叉搜索树是“高度平衡”的，那么试想，在一个平衡的二叉搜索树中，根节点的值在有序数组中的什么位置呢？答案是在有序数组的中间。我们再反过来看这个关系，当我们拿到一个有序数组的时候，我们就能知道，这个数组中间的元素就是对应二叉搜索树的根结点的值。我们再深入想想，根节点的左子结点是什么呢？有没有发现这像是一个重叠子问题：根节点的左子节点的值是原数组的左半数组的中间元素的值。例如，对于[1, 2, 3, 4, 5, 6, 7]，根节点的值就是4，此时左半数组是[1, 2, 3]，那么根结点的左子节点的值就是2，依此类推，我们就能建立如下的二叉搜索树：
+
+ /**
+ * Definition for a binary tree node.
+ * type TreeNode struct {
+ *     Val int
+ *     Left *TreeNode
+ *     Right *TreeNode
+ * }
+ */
+func sortedArrayToBST(nums []int) *TreeNode {
+    return convertSortedArrayToBST(nums, 0, len(nums)-1)
+}
+
+func convertSortedArrayToBST(nums []int, left int, right int) *TreeNode {
+	if left > right {    // left == right时，不能返回
+		return nil
+	}
+	mid := (left+right)/2
+	root := &TreeNode{Val: nums[mid]}
+	root.Left = convertSortedArrayToBST(nums, left, mid-1)
+	root.Right = convertSortedArrayToBST(nums, mid+1, right)
+	return root
+}

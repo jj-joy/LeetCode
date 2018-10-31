@@ -1,0 +1,37 @@
+First-Unique-Character-in-a-String
+
+Given a string, find the first non-repeating character in it and return it's index. If it doesn't exist, return -1.
+
+Examples:
+
+s = "leetcode"
+return 0.
+
+s = "loveleetcode",
+return 2.
+Note: You may assume the string contain only lowercase letters.
+
+
+遍历字符串，将字符串中的字符放入map中，字符第一次出现，值为字符所在位置，字符再次出现，值为字符串长度（也可以其他较大值）
+遍历map，寻找位置最小值minPos
+
+func firstUniqChar(s string) int {
+    hashTable := make(map[rune]int)
+    for i, c := range s {
+        if _, ok := hashTable[c]; ok {
+            hashTable[c] = len(s)
+        } else {
+            hashTable[c] = i
+        }
+    }
+    minPos := len(s)
+    for _, v := range hashTable {
+        if v < minPos {
+            minPos = v
+        }
+    }
+    if minPos == len(s) {
+        return -1
+    }
+    return minPos
+}
