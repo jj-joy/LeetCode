@@ -1,0 +1,77 @@
+Balanced-Binary-Tree
+
+/**
+ * Definition for a binary tree node.
+ * type TreeNode struct {
+ *     Val int
+ *     Left *TreeNode
+ *     Right *TreeNode
+ * }
+ */
+
+高度平衡二叉树是每一个结点的两个子树的深度差不能超过1，那么我们肯定需要一个求各个点深度的函数，然后对每个节点的两个子树来比较深度差，时间复杂度为O(NlgN)
+
+func isBalanced(root *TreeNode) bool {
+	if root == nil {
+		return true
+	}
+	return (abs(getDepth(root.Left), getDepth(root.Right)) < 2) && isBalanced(root.Left) && isBalanced(root.Right)
+    
+}
+
+func getDepth(root *TreeNode) (dep int) {
+	if root == nil {
+		return 0
+	}
+	return max(getDepth(root.Left), getDepth(root.Right)) + 1
+}
+
+
+上面那个方法正确但不是很高效，因为每一个点都会被上面的点计算深度时访问一次，我们可以进行优化。
+方法是如果我们发现子树不平衡，则不计算具体的深度，而是直接返回-1。
+那么优化后的方法为（深度优先搜索）：对于每一个节点，我们通过checkDepth方法递归获得左右子树的深度，如果子树是平衡的，则返回真实的深度，若不平衡，直接返回-1。
+此方法时间复杂度O(N)，空间复杂度O(H)
+
+func isBalanced(root *TreeNode) bool {
+    if dfs(root) == -1 {
+    	return false
+    }
+    return true
+}
+
+func dfs(root *TreeNode) (dep int) {
+	if root == nil {
+		return 0
+	}
+	left := dfs(root.Left)
+	if left == -1 {
+		return -1
+	}
+	right := dfs(root.Right)
+	if right == -1 {
+		return -1
+	}
+	abs := abs(left, right)
+	if abs > 1 {
+		return -1
+	} else {
+		return max(left, right) + 1
+	}
+}
+
+
+func abs(a int, b int) int {
+	if a > b {
+		return a - b
+	} else {
+		return b - a
+	}
+}
+
+func max(a, b int) int {
+	if a > b {
+		return a
+	} else {
+		return b
+	}
+}

@@ -1,0 +1,61 @@
+Subtree-of-Another-Tree
+
+Given two non-empty binary trees s and t, check whether tree t has exactly the same structure and node values with a subtree of s. A subtree of s is a tree consists of a node in s and all of this node's descendants. The tree s could also be considered as a subtree of itself.
+
+Example 1:
+Given tree s:
+     3
+    / \
+   4   5
+  / \
+ 1   2
+Given tree t:
+   4 
+  / \
+ 1   2
+Return true, because t has the same structure and node values with a subtree of s.
+
+Example 2:
+Given tree s:
+     3
+    / \
+   4   5
+  / \
+ 1   2
+    /
+   0
+Given tree t:
+   4
+  / \
+ 1   2
+Return false.
+
+
+Two trees s and t are said to be identical if their root values are same and their left and right subtrees are identical.
+Recursive formulae can be: isIdentical(s,t)= s.val==t.val AND isIdentical(s.left,t.left) AND isIdentical(s.right,t.right)
+
+
+/**
+ * Definition for a binary tree node.
+ * type TreeNode struct {
+ *     Val int
+ *     Left *TreeNode
+ *     Right *TreeNode
+ * }
+ */
+func isSubtree(s *TreeNode, t *TreeNode) bool {
+	if s==nil {
+		return false
+	}
+    if isSametree(s, t) {
+    	return true
+    }
+    return isSubtree(s.Left, t) || isSubtree(s.Right, t)
+}
+
+func isSametree(p *TreeNode, q *TreeNode) bool {
+    if p!=nil && q!=nil {
+    	return p.Val==q.Val && isSametree(p.Left, q.Left) && isSametree(p.Right, q.Right)
+    }
+    return p==q
+}
