@@ -1,0 +1,50 @@
+Valid-Parentheses
+
+Given a string containing just the characters '(', ')', '{', '}', '[' and ']', determine if the input string is valid.
+
+An input string is valid if:
+
+Open brackets must be closed by the same type of brackets.
+Open brackets must be closed in the correct order.
+Note that an empty string is also considered valid.
+
+Example 1:
+Input: "()"
+Output: true
+
+Example 2:
+Input: "()[]{}"
+Output: true
+
+Example 3:
+Input: "(]"
+Output: false
+
+Example 4:
+Input: "([)]"
+Output: false
+
+Example 5:
+Input: "{[]}"
+Output: true
+
+
+func isValid(s string) bool {
+    parenthesis := map[rune]rune{')': '(', '}': '{', ']': '['}
+    str := []rune{}
+    for _,c := range(s) {
+        if c=='(' || c=='{' || c=='[' {
+            str = append(str, c)
+        } else {
+            if len(str) > 0 && parenthesis[c] == str[len(str)-1] {
+                str = str[:len(str)-1]
+            } else {
+                return false
+            }
+        }
+    }
+    if len(str) > 0 {
+        return false
+    }
+    return true
+}
