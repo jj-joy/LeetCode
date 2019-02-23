@@ -1,0 +1,46 @@
+Sqrt(x)
+
+Implement int sqrt(int x).
+
+Compute and return the square root of x, where x is guaranteed to be a non-negative integer.
+
+Since the return type is an integer, the decimal digits are truncated and only the integer part of the result is returned.
+
+Example 1:
+Input: 4
+Output: 2
+
+Example 2:
+Input: 8
+Output: 2
+
+Explanation: The square root of 8 is 2.82842..., and since 
+             the decimal part is truncated, 2 is returned.
+
+func mySqrt(x int) int {
+	if x == 0 {
+		return x
+	}
+
+	var mid, sqrt int
+
+	// start初始值1，不是0
+	start := 1
+	end := x
+
+    // x==1 -> start==end
+	for start <= end {
+		// 中间位置是start + (end - start ) / 2 = (start + end) / 2
+		mid = (start + end) / 2
+
+		// x/mid use math.floor(2.8) = 2, sqrt maybe in [mid, x/mid]
+		if mid * mid <= x {
+			start = mid + 1
+			sqrt = mid
+		} else {
+			end = mid - 1
+		}
+	}
+
+	return sqrt
+}
