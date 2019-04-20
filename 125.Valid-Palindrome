@@ -1,0 +1,44 @@
+125.Valid-Palindrome
+
+Given a string, determine if it is a palindrome, considering only alphanumeric characters and ignoring cases.
+Note: For the purpose of this problem, we define empty string as valid palindrome.
+
+Example 1:
+Input: "A man, a plan, a canal: Panama"
+Output: true
+
+Example 2:
+Input: "race a car"
+Output: false
+
+
+import (
+	"strings"
+)
+
+func isPalindrome(s string) bool {
+	s = strings.ToLower(s)
+    i,j := 0, len(s)-1
+
+    for i<j {
+    	for i<j && !isAlphanumeric(s[i]) {
+    		i++
+    	}
+    	for i<j && !isAlphanumeric(s[j]) {
+    		j--
+    	}
+    	if s[i] != s[j] {
+    		return false
+    	}
+    	i++
+    	j--
+    }
+    return true
+}
+
+func isAlphanumeric(c byte) bool {
+	if (c>='0' && c <='9') || (c>='a' && c<='z') || (c>='A' && c<='Z') {
+		return true
+	}
+	return false
+}
