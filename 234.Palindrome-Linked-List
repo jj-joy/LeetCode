@@ -1,0 +1,73 @@
+234.Palindrome-Linked-List
+
+Given a singly linked list, determine if it is a palindrome.
+
+Example 1:
+Input: 1->2
+Output: false
+
+Example 2:
+Input: 1->2->2->1
+Output: true
+
+Follow up:
+Could you do it in O(n) time and O(1) space?
+
+
+/**
+ * Definition for singly-linked list.
+ * type ListNode struct {
+ *     Val int
+ *     Next *ListNode
+ * }
+ */
+func isPalindrome(head *ListNode) bool {
+    if head == nil || head.Next == nil {
+        return true
+    }
+
+    // 根据回文的特点，我们需要比较对应位置的值是否相等，那么我们首先需要找到链表的中点，这个可以用快慢指针来实现
+    // 使用快慢指针找中点的原理是fast和slow两个指针，每次快指针走两步，慢指针走一步，等快指针走完时，慢指针的位置就是中点。
+    slow, fast := head, head
+    for fast.Next != nil && fast.Next.Next != nil {
+    	slow = slow.Next
+    	fast = fast.Next.Next
+    }
+
+    // 这道题让我们用O(1)的空间，那就是说我们不能使用stack了，那么如果代替stack的作用呢，用stack的目的是为了利用其后进先出的特点，好倒着取出前半段的元素。
+    // 那么现在我们不用stack了，如何倒着取元素呢？
+    // 我们可以在找到中点后，将后半段的链表翻转一下，这样我们就可以按照回文的顺序比较了
+    var newHead *ListNode
+    if fast.Next == nil {
+    	// 奇数 [1, 0, 1]
+        newHead = reverseList(slow)
+    } else {
+    	// 偶数 [1, 0, 0, 1]
+        newHead = reverseList(slow.Next)
+    }
+    
+    for newHead != nil {
+    	if head.Val != newHead.Val {
+    		return false
+    	}
+    	head = head.Next
+    	newHead = newHead.Next
+    }
+    
+    return true
+}
+
+
+func reverseList(head *ListNode) *ListNode {
+    if head == nil || head.Next == nil {
+        return head
+    }
+
+    // 先反转后面的链表，走到链表的末端结点
+    newHead := reverseList(head.Next)
+    // 再将当前节点设置为后面节点的后续节点
+    head.Next.Next = head
+    head.Next = nil
+
+    return newHead
+}
