@@ -1,0 +1,50 @@
+299.Bulls-and-Cows
+
+You are playing the following Bulls and Cows game with your friend: You write down a number and ask your friend to guess what the number is. Each time your friend makes a guess, you provide a hint that indicates how many digits in said guess match your secret number exactly in both digit and position (called "bulls") and how many digits match the secret number but locate in the wrong position (called "cows"). Your friend will use successive guesses and hints to eventually derive the secret number.
+
+Write a function to return a hint according to the secret number and friend's guess, use A to indicate the bulls and B to indicate the cows. 
+
+Please note that both secret number and friend's guess may contain duplicate digits.
+
+Example 1:
+Input: secret = "1807", guess = "7810"
+Output: "1A3B"
+Explanation: 1 bull and 3 cows. The bull is 8, the cows are 0, 1 and 7.
+
+Example 2:
+Input: secret = "1123", guess = "0111"
+Output: "1A1B"
+Explanation: The 1st 1 in friend's guess is a bull, the 2nd or 3rd 1 is a cow.
+Note: You may assume that the secret number and your friend's guess only contain digits, and their lengths are always equal.
+
+
+这道题提出了一个叫公牛母牛的游戏，其实就是之前文曲星上有的猜数字的游戏，
+有一个四位数字，你猜一个结果，然后根据你猜的结果和真实结果做对比，
+提示有多少个数字和位置都正确的叫做bulls，还提示有多少数字正确但位置不对的叫做cows，根据这些信息来引导我们继续猜测正确的数字。
+这道题并没有让我们实现整个游戏，而只用实现一次比较即可。给出两个字符串，让我们找出分别几个bulls和cows。
+
+
+import "strconv"
+
+func getHint(secret string, guess string) string {
+    numbers := [256]int{}
+    bulls, cows := 0, 0
+    for i := range secret {
+        if secret[i] == guess[i] {
+            bulls++
+        } else {
+            // 在处理不是bulls的位置时，
+            // 如果secret当前位置数字的映射值小于0，则表示其在guess中出现过，cows自增1，然后映射值加1
+            // 如果guess当前位置的数字的映射值大于0，则表示其在secret中出现过，cows自增1，然后映射值减1
+            if numbers[int(secret[i])] < 0 {
+                cows++
+            }
+            if numbers[int(guess[i])] > 0 {
+                cows++
+            }
+            numbers[int(secret[i])]++
+            numbers[int(guess[i])]--
+        }
+    }
+    return strconv.Itoa(bulls) + "A" + strconv.Itoa(cows) + "B"
+}
