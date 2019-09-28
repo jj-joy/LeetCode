@@ -22,10 +22,9 @@ The coins can form the following rows:
 Because the 4th row is incomplete, we return 3.
 
 
-根据等差数列求和公式  (首项+末项）×项数/2 
-n = (1 + x) * x / 2
+来看一种O(lgn)的方法，用到了二分搜索法，我们搜索前i行之和刚好大于n的临界点，这样我们减一个就是能排满的行数
+公式 1+2+3+...+n = ((1+n)/2)*n,也就是首尾的均值乘以n等于和
 
-O(lgn)方法，用到了二分搜索法，我们搜索前i行之和刚好大于n的临界点，这样我们减一个就是能排满的行数.
 
 func arrangeCoins(n int) int {
     if n <= 1 {
@@ -37,7 +36,6 @@ func arrangeCoins(n int) int {
     	if mid * (mid + 1) / 2 <= n {
     		low = mid + 1
     	} else {
-    		// 不能mid - 1
     		high = mid
     	}
     }
