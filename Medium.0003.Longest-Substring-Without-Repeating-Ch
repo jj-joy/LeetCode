@@ -68,19 +68,30 @@ The above solution requires at most 2n steps. In fact, it could be optimized to 
 
 The reason is that if s[j] have a duplicate in the range [i, j) with index j', we don't need to increase i little by little. We can skip all the elements in the range [i, j'] and let i to be j' + 1 directly.
 
-Java (Using HashMap)
-
-class Solution {
-    public int lengthOfLongestSubstring(String s) {
-        int n = s.length(), res = 0;
-        Map<Character, Integer> map = new HashMap<>();
-        for (int i = 0, j = 0; j < n; j++) {
-            if (map.containsKey(s.charAt(j))) {
-                i = Math.max(map.get(s.charAt(j))+1, i);
-            }
-            res = Math.max(res, j - i + 1);
-            map.put(s.charAt(j), j);
+// 滑动窗口是数组/字符串问题中常用的抽象方法。
+// 如果s[j]在range [i, j)中重复键的索引是j'，我们不必逐次递增i来滑动窗口。
+// 我们可以直接跳过range [i, j']中的所有元素，并且直接把i设置为j' + 1
+func lengthOfLongestSubstring(s string) int {
+    n := len(s)
+    ans := 0
+    hashMap := make(map[byte]int)
+    
+    for i, j := 0, 0; j < n; j++ {
+        if _, ok := hashMap[s[j]]; ok {
+            i = max(hashMap[s[j]], i)
         }
-        return res;
+        ans = max(ans, j - i + 1)
+        hashMap[s[j]] = j + 1
     }
+    
+    return ans
 }
+
+
+func max(x, y int) int {
+    if x < y {
+        return y
+    }
+    return x
+}
+
