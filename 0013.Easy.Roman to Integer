@@ -1,6 +1,3 @@
-13.Roman-to-Integer
-
-Share
 Roman numerals are represented by seven different symbols: I, V, X, L, C, D and M.
 
 Symbol       Value
@@ -22,8 +19,7 @@ Given a roman numeral, convert it to an integer. Input is guaranteed to be withi
 
 
 从右往左处理字符串。
-当前字符代表的数字，小于右边字符的时候，总体减去当前字符代表的数字。
-否则，总体加上当前字符代表的数字。
+当前字符代表的数字，小于右边字符的时候，总体减去当前字符代表的数字。否则，总体加上当前字符代表的数字。(判断顺序不能反！!)
 
 func romanToInt(s string) int {
     m := map[byte]int{
