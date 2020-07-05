@@ -1,3 +1,15 @@
+Given a string s, find the longest palindromic substring in s. You may assume that the maximum length of s is 1000.
+
+Example 1:
+Input: "babad"
+Output: "bab"
+Note: "aba" is also a valid answer.
+
+Example 2:
+Input: "cbbd"
+Output: "bb"
+
+
 /*
  * 回文是以中心为镜像的。因此回文可以中心向左右扩展，共有2n-1个中心。
  * 为什么不是n个中心？因为长度为偶数回文的中心可以再两个相邻字母之间。
