@@ -25,7 +25,7 @@ func reverse(x int) int {
         x = x / 10
     }
     
-    maxINT32 := int(^uint32(0) >> 1 - 1)
+    maxINT32 := int(^uint32(0) >> 1)
     minINT32 := -maxINT32
     if minINT32 <= y && y <= maxINT32 {
         return y
