@@ -1,5 +1,3 @@
-Count-and-Say
-
 The count-and-say sequence is the sequence of integers with the first five terms as following:
 
 1.     1
@@ -25,20 +23,22 @@ Output: "1211"
 
 
 func countAndSay(n int) string {
-    if n==1 {
+    if n == 1 {
         return "1"
     }
-    seq := []byte{'1'}
+    sequence := []byte{'1'}
     for i := 2; i <= n; i++ {
-        seq = say(seq)
+        sequence = say(sequence)
     }
-    return string(seq)
+    return string(sequence)
 }
+
 
 func say(integers []byte) []byte {
     str := make([]byte, 0)
+    // 类似 快指针、慢指针
     i, j := 0, 0
-    for ; i<len(integers); i++ {
+    for ; i < len(integers); i++ {
         if integers[i] != integers[j] {
             str = append(str, byte(i-j+'0'), integers[j])
             j = i
@@ -47,3 +47,4 @@ func say(integers []byte) []byte {
     str = append(str, byte(i-j+'0'), integers[j])
     return str
 }
+
