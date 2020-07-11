@@ -1,4 +1,4 @@
-Excel-Sheet-Column-Title
+0168.Excel Sheet Column Title.Easy
 
 Given a positive integer, return its corresponding column title as appear in an Excel sheet.
 
@@ -25,14 +25,15 @@ Input: 701
 Output: "ZY"
 
 
-// (n - 1) map to 0,1,2...9
-
 func convertToTitle(n int) string {
-	var str []byte
-    for n!= 0 {
-    	// prepend item into slice
-    	str = append(n%26+'A', str...)
-    	n /= 26
+    var title []byte
+    for n != 0 {
+        // 能被26整除的数字，无法得到字符Z
+        // (n - 1) map to 0,1,2...9
+        n--
+        title = append([]byte{byte(n % 26 + 'A')}, title...)
+        n /= 26
     }
-    return str
+    return string(title)
 }
+
