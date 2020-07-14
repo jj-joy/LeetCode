@@ -1,4 +1,4 @@
-Remove-Linked-List-Elements
+0203.Remove Linked List Elements.Easy
 
 Remove all elements from a linked list of integers that have value val.
 
@@ -6,6 +6,8 @@ Example:
 Input:  1->2->6->3->4->5->6, val = 6
 Output: 1->2->3->4->5
 
+
+看似简单，很多边界条件需要判断！！！
 
 /**
  * Definition for singly-linked list.
@@ -15,21 +17,20 @@ Output: 1->2->3->4->5
  * }
  */
 func removeElements(head *ListNode, val int) *ListNode {
-	node := head
-
+    node := head
     for node != nil {
-		if node.Next != nil && node.Next.Val == val {
-			node.Next = node.Next.Next
+        if node.Next != nil && node.Next.Val == val {
+            node.Next = node.Next.Next
         } else {
             node = node.Next
         }
-	}
+    }
 
-	if head != nil && head.Val == val {
-		head = head.Next
-	}
+    if head != nil && head.Val == val {
+        head = head.Next
+    }
 
-	return head
+    return head
 }
 
 
@@ -46,3 +47,4 @@ func removeElements(head *ListNode, val int) *ListNode {
 		return head
 	}
 }
+
