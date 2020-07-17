@@ -1,0 +1,37 @@
+204.Count Primes.Easy
+
+Count the number of prime numbers less than a non-negative number, n.
+
+Example:
+Input: 10
+Output: 4
+Explanation: There are 4 prime numbers less than 10, they are 2, 3, 5, 7.
+
+
+这道题给定一个非负数n，求小于n的质数的个数
+
+解题方法：埃拉托斯特尼筛法（Sieve of Eratosthenes）
+要得到自然数n以内的全部素数，必须把不大于根号n的所有素数的倍数剔除，剩下的就是素数。
+给出要筛数值的范围n，找出以内的素数。先用2去筛，即把2留下，把2的倍数剔除掉；再用下一个质数，也就是3筛，把3留下，把3的倍数剔除掉；接下去用下一个质数5筛，把5留下，把5的倍数剔除掉；不断重复下去......。
+
+算法的过程如下：
+我们从2开始遍历到根号n，先找到第一个质数2，然后将其所有的倍数全部标记出来，然后到下一个质数3，标记其所有倍数，一次类推，直到根号n，此时数组中未被标记的数字就是质数。
+我们需要一个n-1长度的bool型数组来记录每个数字是否被标记，长度为n-1的原因是题目说是小于n的质数个数，并不包括n。
+
+
+func countPrimes(n int) int {
+    count := 0
+    notPrimes := make([]bool, n)
+    
+    for i := 2; i < n; i++ {
+        if notPrimes[i] == false {
+            count++
+        }
+        for j := 2; i*j < n; j++ {
+            notPrimes[i*j] = true
+        }
+    }
+    
+    return count
+}
+
