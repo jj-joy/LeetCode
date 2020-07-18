@@ -21,23 +21,20 @@ You must use only standard operations of a queue -- which means only push to bac
 Depending on your language, queue may not be supported natively. You may simulate a queue by using a list or deque (double-ended queue), as long as you use only standard operations of a queue.
 You may assume that all operations are valid (for example, no pop or top operations will be called on an empty stack).
 
-/*
-	思路(书中标准解法：用两个队列实现一个栈）：
-	（1）对于插入操作，栈与队列都是从队尾进行，因此很容易完成。
-	（2）对于弹出操作，队列从队头开始，而栈从队尾开始，要想取到队尾元素，需要第二个队列的协助：假设queue1不为空，queue2为空，将queue1的原数依次取出放到queue2中，同时判断，当queue1的长度为1时，不要将该元素放到queue2中，而是直接取出丢弃，此时即完成了栈的弹出操作。也就是说，弹出一个元素，其他元素的存储位置就会从本队列移动到另一个队列中。
-	总结下，运作过程中，queue，queue2一定至少一个为空。插入操作选择queue1，queue2中不为空的那个队列插入（如果都为空，随意选择一个），弹出时将不为空的队列除最后一个	队列的其他元素依次取出放到另一个队列中，而将最后那一个元素取出丢弃即可。
-*/
+
+思路(书中标准解法：用两个队列实现一个栈）：
+（1）对于插入操作，栈与队列都是从队尾进行，因此很容易完成。
+（2）对于弹出操作，队列从队头开始，而栈从队尾开始，要想取到队尾元素，需要第二个队列的协助：假设queue1不为空，queue2为空，将queue1的原数依次取出放到queue2中，同时判断，当queue1的长度为1时，不要将该元素放到queue2中，而是直接取出丢弃，此时即完成了栈的弹出操作。也就是说，弹出一个元素，其他元素的存储位置就会从本队列移动到另一个队列中。
+总结下，运作过程中，queue，queue2一定至少一个为空。插入操作选择queue1，queue2中不为空的那个队列插入（如果都为空，随意选择一个），弹出时将不为空的队列除最后一个	队列的其他元素依次取出放到另一个队列中，而将最后那一个元素取出丢弃即可。
 
 type MyStack struct {
     a, b *Queue
 }
 
-
 /** Initialize your data structure here. */
 func Constructor() MyStack {
     return MyStack{a: NewQueue(), b: NewQueue()}
 }
-
 
 /** Push element x onto stack. */
 func (this *MyStack) Push(x int)  {
@@ -46,7 +43,6 @@ func (this *MyStack) Push(x int)  {
 	}
     this.a.Push(x)
 }
-
 
 /** Removes the element on top of the stack and returns that element. */
 func (this *MyStack) Pop() int {
@@ -59,7 +55,6 @@ func (this *MyStack) Pop() int {
     return this.a.Pop()
 }
 
-
 /** Get the top element. */
 func (this *MyStack) Top() int {
     res := this.Pop()
@@ -67,32 +62,30 @@ func (this *MyStack) Top() int {
     return res
 }
 
-
 /** Returns whether the stack is empty. */
 func (this *MyStack) Empty() bool {
     return (this.a.Len() == 0) && (this.b.Len() == 0)
 }
 
 
-Approach #3 (One Queue, push-O(n), pop-O(1))
+Approach # (One Queue, push-O(n), pop-O(1))
 The mentioned above two approaches have one weakness, they use two queues. This could be optimized as we use only one queue, instead of two.
 
 Algorithm
 Push
-When we push an element into a queue, it will be stored at back of the queue due to queue's properties. But we need to implement a stack, where last inserted element should be in the front of the queue, not at the back. To achieve this we can invert the order of queue elements when pushing a new element.
-!0225_stack_using_queues_pushC.png
-
+When we push an element into a queue, it will be stored at back of the queue due to queue's properties. 
+But we need to implement a stack, where last inserted element should be in the front of the queue, not at the back. 
+To achieve this we can invert the order of queue elements when pushing a new element.
+2 1 3 -> 1 3 2 -> 3 2 1
 
 type MyStack struct {
     queue *Queue
 }
 
-
 /** Initialize your data structure here. */
 func Constructor() MyStack {
     return MyStack{queue: NewQueue()}
 }
-
 
 /** Push element x onto stack. */
 func (this *MyStack) Push(x int)  {
@@ -102,12 +95,10 @@ func (this *MyStack) Push(x int)  {
     }
 }
 
-
 /** Removes the element on top of the stack and returns that element. */
 func (this *MyStack) Pop() int {
     return this.queue.Pop()
 }
-
 
 /** Get the top element. */
 func (this *MyStack) Top() int {
@@ -115,7 +106,6 @@ func (this *MyStack) Top() int {
     this.Push(top)
     return top
 }
-
 
 /** Returns whether the stack is empty. */
 func (this *MyStack) Empty() bool {

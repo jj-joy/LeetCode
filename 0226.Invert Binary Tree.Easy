@@ -1,16 +1,14 @@
-Invert-Binary-Tree
+0226.Invert Binary Tree.Easy
 
 Invert a binary tree.
 
 Example:
-
 Input:
      4
    /   \
   2     7
  / \   / \
 1   3 6   9
-
 Output:
      4
    /   \
@@ -34,11 +32,10 @@ Google: 90% of our engineers use the software you wrote (Homebrew), but you canâ
  */
 func invertTree(root *TreeNode) *TreeNode {
     if root == nil {
-    	return nil
+        return nil
     }
-    left := invertTree(root.Left)
-    right := invertTree(root.Right)
-    root.Left = right
-    root.Right = left
+    
+    root.Left, root.Right = invertTree(root.Right), invertTree(root.Left)
     return root
 }
+
