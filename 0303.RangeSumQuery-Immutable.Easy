@@ -1,0 +1,49 @@
+0303.RangeSumQuery-Immutable.Easy
+
+Given an integer array nums, find the sum of the elements between indices i and j (i ≤ j), inclusive.
+
+Example:
+    Given nums = [-2, 0, 3, -5, 2, -1]
+    sumRange(0, 2) -> 1
+    sumRange(2, 5) -> -1
+    sumRange(0, 5) -> -3
+
+Note:
+    1. You may assume that the array does not change.
+    2. There are many calls to sumRange function.
+
+Imagine that sumRange is called one thousand times with the exact same arguments. How could we speed that up ???
+
+
+Approach # (Caching)
+Imagine that we pre-compute the cummulative sum from index 0 to k. Could we use this information to derive sumRange(i, j)?
+Let us define sum[k] as the cumulative sum for nums[0 ... k−1] (inclusive):
+    sum[k] = nums[0] + nums[1] + ... + nums[k-1],  k > 0
+    sum[k] = 0,  k == 0
+Now, we can calculate sumRange as following:
+    sumRange(i, j) = sum[j+1] − sum[i]
+Notice in the code we inserted a dummy 0 as the first element in the sum array. This trick saves us from an extra conditional check in sumRange function.
+
+
+type NumArray struct {
+    sum []int
+}
+
+func Constructor(nums []int) NumArray {
+    sum := make([]int, len(nums)+1)
+    for i := range nums {
+        sum[i+1] = sum[i] + nums[i]
+    }
+    return NumArray{sum: sum}
+}
+
+func (this *NumArray) SumRange(i int, j int) int {
+    return this.sum[j+1] - this.sum[i]
+}
+
+/**
+ * Your NumArray object will be instantiated and called as such:
+ * obj := Constructor(nums);
+ * param_1 := obj.SumRange(i,j);
+ */
+
