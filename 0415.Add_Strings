@@ -1,0 +1,42 @@
+0415.Add_Strings
+
+Share
+Given two non-negative integers num1 and num2 represented as string, return the sum of num1 and num2.
+
+Note:
+    1. The length of both num1 and num2 is < 5100.
+    2. Both num1 and num2 contains only digits 0-9.
+    3. Both num1 and num2 does not contain any leading zero.
+    4. You must not use any built-in BigInteger library or convert the inputs to integer directly.
+
+
+func addStrings(num1 string, num2 string) string {
+    sum := make([]byte, 0)
+    carry := byte(0)
+
+    p1, p2 := len(num1)-1, len(num2)-1
+    for p1 >=0 || p2 >= 0 {
+        x1, x2 := byte(0), byte(0)
+        if p1 >=0 {
+            x1 = num1[p1] - '0'
+        }
+        if p2 >=0 {
+            x2 = num2[p2] - '0'
+        }
+
+        value := (x1 + x2 + carry) % 10
+        carry = (x1 + x2 + carry) / 10
+
+        sum = append([]byte{value + '0'}, sum...)
+
+        p1--
+        p2--
+    }
+
+    if carry != 0 {
+        sum = append([]byte{carry + '0'}, sum...)
+    }
+
+    return string(sum)
+}
+
