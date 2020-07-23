@@ -1,0 +1,37 @@
+0067.Add_Binary
+
+Given two binary strings, return their sum (also a binary string).
+The input strings are both non-empty and contains only characters 1 or 0.
+
+Example 1:
+    Input: a = "11", b = "1"
+    Output: "100"
+
+Example 2:
+    Input: a = "1010", b = "1011"
+    Output: "10101"
+
+# 考虑二进制字符超出无符号整形上限的情况
+
+func addBinary(a string, b string) string {
+    s := ""
+    c := 0
+    // 进制
+    X_SYSTEM := 2
+    
+    for i, j := len(a)-1, len(b)-1; i>=0 || j>=0 || c==1; {
+        if i >= 0 {
+            c += int(a[i] - '0')
+            i--
+        }
+        if j >= 0 {
+            c += int(b[j] - '0')
+            j--
+        }
+        s = string(c % X_SYSTEM + '0') + s
+        c /= X_SYSTEM
+    }
+    
+    return s
+}
+

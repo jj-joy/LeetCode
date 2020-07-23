@@ -1,0 +1,64 @@
+0107.Binary_Tree_Level_Order_Traversal_II
+
+Given a binary tree, return the bottom-up level order traversal of its nodes' values. (ie, from left to right, level by level from leaf to root).
+
+For example:
+    Given binary tree [3,9,20,null,null,15,7],
+        3
+       / \
+      9  20
+        /  \
+       15   7
+    return its bottom-up level order traversal as:
+    [
+      [15,7],
+      [9,20],
+      [3]
+    ]
+
+
+二叉树遍历
+树的遍历是树的一种重要的运算。
+所谓遍历是指对树中所有结点的信息的访问，即依次对树中每个结点访问一次且仅访问一次，我们把这种对所有节点的访问称为遍历（traversal）。
+那么树的两种重要的遍历模式是深度优先遍历和广度优先遍历，深度优先一般用递归，广度优先一般用队列。
+一般情况下能用递归实现的算法大部分也能用堆栈来实现。
+
+深度优先遍历
+对于一颗二叉树，深度优先搜索(Depth First Search)是沿着树的深度遍历树的节点，尽可能深的搜索树的分支。
+那么深度遍历有重要的三种方法。这三种方式常被用于访问树的节点，它们之间的不同在于访问每个节点的次序不同。
+这三种遍历分别叫做先序遍历（preorder），中序遍历（inorder）和后序遍历（postorder）。
+
+
+/**
+ * Definition for a binary tree node.
+ * type TreeNode struct {
+ *     Val int
+ *     Left *TreeNode
+ *     Right *TreeNode
+ * }
+ */
+func levelOrderBottom(root *TreeNode) [][]int {
+    traversal := [][]int{}
+    
+    var dfs func(root *TreeNode, depth int)
+    
+    dfs = func(root *TreeNode, depth int) {
+        if root == nil {
+            return
+        }
+        
+        if len(traversal) <= depth {
+            traversal = append([][]int{[]int{}}, traversal...)
+        }
+        
+        traversal[len(traversal)-depth-1] = append(traversal[len(traversal)-depth-1], root.Val)
+        
+        dfs(root.Left, depth+1)
+        dfs(root.Right, depth+1)
+    }
+    
+    dfs(root, 0)
+    
+    return traversal
+}
+

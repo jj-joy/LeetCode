@@ -1,0 +1,31 @@
+0367.Valid_Perfect_Square
+
+Note: Do not use any built-in library function such as sqrt.
+
+Example 1:
+    Input: 16
+    Output: true
+
+Example 2:
+    Input: 14
+    Output: false
+
+Constraints:
+    1 <= num <= 2^31 - 1
+
+
+func isPerfectSquare(num int) bool {
+    for low, high := 1, num; low <= high; {
+        mid := (low + high) / 2
+        if mid * mid < num {
+            low = mid + 1
+        } else if mid * mid > num {
+            high = mid - 1
+        } else {
+            return true
+        }
+    }
+
+    return false
+}
+
