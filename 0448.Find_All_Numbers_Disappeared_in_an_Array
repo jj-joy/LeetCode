@@ -1,14 +1,14 @@
-448.Find-All-Numbers-Disappeared-in-an-Array
+0448.Find_All_Numbers_Disappeared_in_an_Array
 
 Given an array of integers where 1 ≤ a[i] ≤ n (n = size of array), some elements appear twice and others appear once.
 Find all the elements of [1, n] inclusive that do not appear in this array.
 Could you do it without extra space and in O(n) runtime? You may assume the returned list does not count as extra space.
 
 Example:
-Input:
-[4,3,2,7,8,2,3,1]
-Output:
-[5,6]
+    Input:
+    [4,3,2,7,8,2,3,1]
+    Output:
+    [5,6]
 
 
 第一种解法，这种解法的思路路是，对于每个数字nums[i]，如果其对应的nums[nums[i]-1]是正数，我们就赋值为其相反数，如果已经是负数了，就不变了，那么最后我们只要把留下的整数对应的位置加入结果res中即可。
@@ -25,18 +25,18 @@ Output:
 [-4,-3,-2,-7,8,2,-3,-1]
 
 func findDisappearedNumbers(nums []int) []int {
-    for i,_ := range nums {
+    for i := range nums {
         idx := abs(nums[i]) - 1
-    	if nums[idx] > 0 {
-    		nums[idx] = -nums[idx]
-    	}
+        if nums[idx] > 0 {
+            nums[idx] = -nums[idx]
+        }
     }
 
     var res []int
-    for i,_ := range nums {
-    	if nums[i] > 0 {
-    		res = append(res, i+1)
-    	}
+    for i := range nums {
+        if nums[i] > 0 {
+            res = append(res, i+1)
+        }
     }
 
     return res
@@ -48,7 +48,6 @@ func abs(n int) int {
 	}
 	return n
 }
-
 
 
 第二种方法是将nums[i]置换到其对应的位置nums[nums[i]-1]上去，
@@ -74,3 +73,4 @@ func findDisappearedNumbers(nums []int) []int {
 
     return res
 }
+

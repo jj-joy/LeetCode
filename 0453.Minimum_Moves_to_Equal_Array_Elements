@@ -1,16 +1,15 @@
-453.Minimum-Moves-to-Equal-Array-Elements
+0453.Minimum_Moves_to_Equal_Array_Elements
 
 Given a non-empty integer array of size n, find the minimum number of moves required to make all array elements equal, where a move is incrementing n - 1 elements by 1.
 
 Example:
-Input:
-[1,2,3]
-Output:
-3
-
-Explanation:
-Only three moves are needed (remember each move increments two elements):
-[1,2,3]  =>  [2,3,3]  =>  [3,4,3]  =>  [4,4,4]
+    Input:
+    [1,2,3]
+    Output:
+    3
+    Explanation:
+    Only three moves are needed (remember each move increments two elements):
+    [1,2,3]  =>  [2,3,3]  =>  [3,4,3]  =>  [4,4,4]
 
 
 这道题给了我们一个长度为n的数组，说是我们每次可以对n-1个数字同时加1，问最少需要多少次这样的操作才能让数组中所有的数字相等。
@@ -21,17 +20,13 @@ Only three moves are needed (remember each move increments two elements):
 比如数组[1，2，3], 给除去最大值的其他数字加1，变为[2，3，3]，我们全体减1，并不影响数字间相对差异，变为[1，2，2]，这个结果其实就是原始数组的最大值3自减1，
 那么问题也可能转化为，将所有数字都减小到最小值，这样难度就大大降低了，我们只要先找到最小值，然后累加每个数跟最小值之间的差值即可
 
-
-n = len(nums)
-经过 m 次移动后，每个数字都是 x，可得
-sum + m * (n - 1) = x * n
-
-实际上，每次移动都会往最小的数字 min 上加一，所以
-x = min + m
-
-通过以上两个等式，可得
-m = sum - min * n
-
+已知：数列nums，初始和sum，长度n，最小的数为min
+假设移动k步
+每移动一步，n-1个数会被+1，则最终和s = sum + (n-1) * k
+    平均数为 s/n（最终每个数都是s/n）
+    最小数每次移动都被+1，因此有：k = s/n - min
+    即：(sum + (n-1) * k) / n - min = k
+求得：k = sum - min * n
 
 func minMoves(nums []int) int {
     sum, min := 0, nums[0]
@@ -43,3 +38,4 @@ func minMoves(nums []int) int {
     }
     return sum - min*len(nums)
 }
+

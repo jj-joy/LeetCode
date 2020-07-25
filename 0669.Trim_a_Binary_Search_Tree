@@ -1,39 +1,37 @@
-Trim-a-Binary-Search-Tree
+0669.Trim_a_Binary_Search_Tree
 
 Given a binary search tree and the lowest and highest boundaries as L and R, trim the tree so that all its elements lies in [L, R] (R >= L). You might need to change the root of the tree, so the result should return the new root of the trimmed binary search tree.
 
 Example 1:
-Input: 
-    1
-   / \
-  0   2
+    Input:
+        1
+       / \
+      0   2
+      L = 1
+      R = 2
+    Output:
+        1
+          \
+           2
 
-  L = 1
-  R = 2
-
-Output: 
-    1
-      \
-       2
 Example 2:
-Input: 
-    3
-   / \
-  0   4
-   \
-    2
-   /
-  1
+    Input:
+        3
+       / \
+      0   4
+       \
+        2
+       /
+      1
+      L = 1
+      R = 3
+    Output:
+          3
+         /
+       2
+      /
+     1
 
-  L = 1
-  R = 3
-
-Output: 
-      3
-     / 
-   2   
-  /
- 1
 
 这道题让我们修剪一棵二叉搜索树，给了个边界范围[L, R], 所有不在这个范围内的结点应该被移除掉，
 但是仍需要保留二叉搜索树的性质，即左<根<右，有时候是小于等于。
@@ -55,7 +53,6 @@ Output:
  *     Right *TreeNode
  * }
  */
-
 func trimBST(root *TreeNode, L int, R int) *TreeNode {
     if root == nil {
         return root
@@ -70,3 +67,4 @@ func trimBST(root *TreeNode, L int, R int) *TreeNode {
         return root
     }
 }
+
