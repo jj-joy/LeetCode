@@ -1,0 +1,74 @@
+0501.Find_Mode_in_Binary_Search_Tree
+
+Given a binary search tree (BST) with duplicates, find all the mode(s) (the most frequently occurred element) in the given BST.
+
+Assume a BST is defined as follows:
+    The left subtree of a node contains only nodes with keys less than or equal to the node's key.
+    The right subtree of a node contains only nodes with keys greater than or equal to the node's key.
+    Both the left and right subtrees must also be binary search trees.
+
+For example:
+    Given BST [1,null,2,2],
+       1
+        \
+         2
+        /
+       2
+    return [2].
+
+Note: If a tree has more than one mode, you can return them in any order.
+
+Follow up: Could you do that without using any extra space? (Assume that the implicit stack space incurred due to recursion does not count).
+
+
+由于是二分搜索树，那么我们中序遍历出来的结果就是有序的，这样我们只要比较前后两个元素是否相等，就等统计出现某个元素出现的次数，因为相同的元素肯定是都在一起的。
+我们需要一个结点变量previous来记录上一个遍历到的结点，然后max是记录最大的次数，count来计数当前元素出现的个数，我们在中序遍历的时候，pre和之前一个结点值比较，如果相等，count自增1，如果不等，count重置1。
+如果此时count大于了max，那么我们清空结果res，并把当前结点值加入结果res，如果count等于max，那我们直接将当前结点值加入结果res，然后max赋值为count。
+最后我们要把previous更新为当前结点的值。
+
+/**
+ * Definition for a binary tree node.
+ * type TreeNode struct {
+ *     Val int
+ *     Left *TreeNode
+ *     Right *TreeNode
+ * }
+ */
+func findMode(root *TreeNode) []int {
+    if root == nil {
+        return []int{}
+    }
+
+    var res []int
+    prev, count, max := root.Val, 0, 0
+    inOrder(root, &prev, &count, &max, &res)
+
+    return res
+}
+
+func inOrder(node *TreeNode, prev *int, count *int, max *int, res *[]int) {
+    if node == nil {
+        return
+    }
+
+    inOrder(node.Left, prev, count, max, res)
+
+    if node.Val == *prev {
+        *count++
+    } else {
+        *count = 1
+    }
+
+    if *count >= *max {
+        if *count > *max {
+            *res = []int{}
+        }
+        *res = append(*res, node.Val)
+        *max = *count
+    }
+
+    *prev = node.Val
+
+    inOrder(node.Right, prev, count, max, res)
+}
+
