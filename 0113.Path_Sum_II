@@ -1,0 +1,65 @@
+0113.Path_Sum_II
+Medium
+
+Given a binary tree and a sum, find all root-to-leaf paths where each path's sum equals the given sum.
+
+Note: A leaf is a node with no children.
+
+Example:
+    Given the below binary tree and sum = 22,
+          5
+         / \
+        4   8
+       /   / \
+      11  13  4
+     /  \    / \
+    7    2  5   1
+    Return:
+    [
+       [5,4,11,2],
+       [5,8,4,5]
+    ]
+
+
+基本思想都一样，还是需要用深度优先搜索 DFS。
+每当 DFS 搜索到新结点时，都要保存该结点。
+而且每当找出一条路径之后，都将这个保存为一维 path 的路径保存到最终结果二维 paths 中。
+并且，每当 DFS 搜索到子结点，发现不是路径和时，返回上一个结点时，需要把该结点从一维 path 中移除。
+
+/**
+ * Definition for a binary tree node.
+ * type TreeNode struct {
+ *     Val int
+ *     Left *TreeNode
+ *     Right *TreeNode
+ * }
+ */
+func pathSum(root *TreeNode, sum int) [][]int {
+    path, paths := []int{}, [][]int{}
+
+    dfs(root, sum, &path, &paths)
+
+    return paths
+}
+
+func dfs (node *TreeNode, sum int, path *[]int, paths *[][]int) {
+    if node == nil {
+        return
+    }
+
+    *path = append(*path, node.Val)
+    if node.Left == nil && node.Right == nil {
+        if  node.Val == sum {
+            // 一定要使用深拷贝!!!
+            _path := make([]int, len(*path))
+            copy(_path, *path)
+            *paths = append(*paths, _path)
+        }
+    } else {
+        dfs(node.Left, sum-node.Val, path, paths)
+        dfs(node.Right, sum-node.Val, path, paths)
+    }
+
+    *path = (*path)[:len(*path)-1]
+}
+
