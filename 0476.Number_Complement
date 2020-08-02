@@ -1,0 +1,50 @@
+0476.Number_Complement
+Easy
+
+Given a positive integer, output its complement number. The complement strategy is to flip the bits of its binary representation.
+
+Example 1:
+    Input: 5
+    Output: 2
+    Explanation: The binary representation of 5 is 101 (no leading zero bits), and its complement is 010. So you need to output 2.
+
+Example 2:
+    Input: 1
+    Output: 0
+    Explanation: The binary representation of 1 is 1 (no leading zero bits), and its complement is 0. So you need to output 0.
+
+Constraints:
+    The given integer num is guaranteed to fit within the range of a 32-bit signed integer.
+    num >= 1
+    You could assume no leading zero bit in the integer’s binary representation.
+    This question is the same as 1009: https://leetcode.com/problems/complement-of-base-10-integer/
+
+
+这道题给了我们一个数，让我们求补数。
+通过分析题目汇总的例子，我们知道需要做的就是每个位翻转一下就行了，但是翻转的起始位置上从最高位的1开始的，前面的0是不能被翻转的。
+由于位操作里面的取反符号^本身就可以翻转位，但是如果直接对num取反的话就是每一位都翻转了，而最高位1之前的0是不能翻转的，所以我们只要用一个mask来标记最高位1前面的所有0的位置，然后对mask取反后，与上对num取反的结果即可。
+
+func findComplement(num int) int {
+    // The given integer num is guaranteed to fit within the range of a 32-bit signed integer.
+    mask := int(^int32(0) >> 1)
+
+    for num & mask != 0 {
+        mask <<= 1
+    }
+
+    return ^num & ^mask
+}
+
+
+注意：翻转的起始位置上从最高位的1开始的，前面的0是不能被翻转的！！！
+迭代的写法，一行搞定碉堡了，
+思路就是每次都右移一位，并根据最低位的值先进行翻转，如果当前值小于等于1了，就不用再调用递归函数了。
+
+func findComplement(num int) int {
+    if num <= 1 {
+        return 1 - num % 2
+    }
+    
+    return (1 - num % 2) + 2 * findComplement(num / 2)
+}
+

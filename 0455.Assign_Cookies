@@ -29,7 +29,6 @@ Example 2:
 如果当前cookie不能满足当前小朋友，那么我们就用下一块稍大一点的cookie去尝试满足当前的小朋友。
 当cookie发完了或者小朋友没有了我们停止遍历
 
-
 func findContentChildren(g []int, s []int) int {
     g = MergeSort(g)
     s = MergeSort(s)

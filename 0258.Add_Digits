@@ -1,0 +1,60 @@
+0258.Add_Digits
+Easy
+
+Given a non-negative integer num, repeatedly add all its digits until the result has only one digit.
+
+Example:
+    Input: 38
+    Output: 2
+    Explanation: The process is like: 3 + 8 = 11, 1 + 1 = 2.
+                 Since 2 has only one digit, return it.
+
+Follow up:
+Could you do it without any loop/recursion in O(1) runtime?
+
+
+Approach: Mathematical: Digital Root
+Formula for the Digital Root
+
+There is a known formula to compute a digital root in a decimal numeral system:
+dr_{10}(n) = 0, if n = 0
+dr_{10}(n) = 9, if n = 9k
+dr_{10}(n) = n mod 9, if n != 9k
+
+How to derive it? Probably, you already know the following proof from school, where it was used for a divisibility by 9: "The original number is divisible by 9 if and only if the sum of its digits is divisible by 9". Let's revise it briefly.
+
+The input number could be presented in a standard way, where d_0, d_1, .. d_k are digits of n:
+n = d_0 + d_1*10^1 + d_2*10^2 + ... + d_k*10^k
+
+One could expand each power of ten, using the following:
+10 = 9 * 1 + 1
+100 = 99 + 1 = 9 * 11 + 1
+1000 = 999 + 1 = 9 * 111 + 1
+...
+10^k = 100..0 = 99..9 + 1 = 9 * 11..1 + 1
+
+That results in
+n = d_0 + d_1 * (9 * 1 + 1) + d_2 * (9 * 11 + 1) + ... + d_k * (9 * 11..1 + 1)
+
+and could be simplified as
+n = (d_0 + d_1 + d_2 + ... + d_k) + 9 * (d_1 * 1 + d_2 * 11 + ... + d_k * 11..1)
+
+The last step is to take the modulo from both sides:
+n mod 9 = (d_0 + d_1 + d_2 + ... + d_k) mod 9
+
+and to consider separately three cases: the sum of digits is 0, the sum of digits is divisible by 9, and the sum of digits is not divisible by nine:
+dr_{10}(n) = 0, if n = 0
+dr_{10}(n) = 9, if n = 9k
+dr_{10}(n) = n mod 9, if n != 9k
+
+
+func addDigits(num int) int {
+    if num == 0 {
+    	return 0
+    } else if num % 9 == 0 {
+    	return 9
+    } else {
+    	return num % 9
+    }
+}
+

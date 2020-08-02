@@ -1,0 +1,109 @@
+0232.Implement_Queue_using_Stacks
+Easy
+
+Implement the following operations of a queue using stacks.
+
+push(x) -- Push element x to the back of queue.
+pop() -- Removes the element from in front of queue.
+peek() -- Get the front element.
+empty() -- Return whether the queue is empty.
+
+Example:
+    MyQueue queue = new MyQueue();
+    queue.push(1);
+    queue.push(2);
+    queue.peek();  // returns 1
+    queue.pop();   // returns 1
+    queue.empty(); // returns false
+
+Notes:
+    You must use only standard operations of a stack -- which means only push to top, peek/pop from top, size, and is empty operations are valid.
+    Depending on your language, stack may not be supported natively. You may simulate a stack by using a list or deque (double-ended queue), as long as you use only standard operations of a stack.
+    You may assume that all operations are valid (for example, no pop or peek operations will be called on an empty queue).
+
+
+type MyQueue struct {
+    s1, s2 *Stack
+}
+
+/** Initialize your data structure here. */
+func Constructor() MyQueue {
+    return MyQueue{s1: NewStack(), s2: NewStack()}
+}
+
+/** Push element x to the back of queue. */
+func (this *MyQueue) Push(x int)  {
+    this.s1.Push(x)
+}
+
+/** Removes the element from in front of queue and returns that element. */
+func (this *MyQueue) Pop() int {
+    for this.s1.Len() > 0 {
+        this.s2.Push(this.s1.Pop())
+    }
+    
+    pop := this.s2.Pop()
+    
+    for this.s2.Len() > 0 {
+        this.s1.Push(this.s2.Pop())
+    }
+    
+    return pop
+}
+
+/** Get the front element. */
+func (this *MyQueue) Peek() int {
+    for this.s1.Len() > 0 {
+        this.s2.Push(this.s1.Pop())
+    }
+    
+    peek := this.s2.Pop()
+    this.s2.Push(peek)
+    
+    for this.s2.Len() > 0 {
+        this.s1.Push(this.s2.Pop())
+    }
+    
+    return peek
+}
+
+/** Returns whether the queue is empty. */
+func (this *MyQueue) Empty() bool {
+    return this.s1.Len() == 0
+}
+
+
+/**
+ * Your MyQueue object will be instantiated and called as such:
+ * obj := Constructor();
+ * obj.Push(x);
+ * param_2 := obj.Pop();
+ * param_3 := obj.Peek();
+ * param_4 := obj.Empty();
+ */
+type Stack struct {
+    items []int
+}
+
+func NewStack() *Stack {
+    return &Stack{items: []int{}}
+}
+
+func (s *Stack) Push(n int) {
+    s.items = append(s.items, n)
+}
+
+func (s *Stack) Pop() int {
+    pop := s.items[len(s.items)-1]
+    s.items = s.items[:len(s.items)-1]
+    return pop
+}
+
+func (s *Stack) Len() int {
+    return len(s.items)
+}
+
+func (s *Stack) IsEmpty() bool {
+    return s.Len() == 0
+}
+
