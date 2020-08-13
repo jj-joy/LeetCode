@@ -17,6 +17,8 @@ While we iterate and inserting elements into the table,
 we also look back to check if current element's complement already exists in the table. 
 If it exists, we have found a solution and return immediately.
 
+https://jj-joy.github.io/Go_map实现原理.pdf
+
 func twoSum(nums []int, target int) []int {
     hashTable := make(map[int]int)
 
@@ -29,3 +31,4 @@ func twoSum(nums []int, target int) []int {
 
     return nil
 }
+
